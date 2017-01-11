@@ -1,0 +1,21 @@
+{
+  "name": "webpack-2-long-term-cache",
+  "version": "1.0.0",
+  "description": "The basic configuration required for long-lived vendor bundle and entry bundles.",
+  "main": "index.js",
+  "author": "Tim Whidden <tim@1stdibs.com>",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
+  },
+  "engines": {
+    "node": ">=6.9.1"
+  },
+  "devDependencies": {
+    "webpack": "beta"
+  },
+  "scripts": {
+    "webpack": "webpack"
+  }
+}
