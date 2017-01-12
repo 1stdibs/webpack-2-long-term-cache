@@ -43,22 +43,34 @@ module.exports = {
         publicPath: '/dist'
     },
 
-    // `recordsPath` allows webpack builds to save state between runs. This
+    // `recordsPath` allows webpack to save state between builds. This
     // allows you to add more entries without breaking the vendor bundle hash.
     // Note: in Jenkins, there is an environment variable, JOB_NAME, set to the
     // current job name. We use JOB_NAME to save state for different jobs which
     // use the same config (e.g. deploying to different development and qa
-    // servers). Unfortunately, this is currently undocumented.
+    // servers). There is currently no documentation for `recordsPath` in
+    // webpack documentation.
     recordsPath: recordsPath(process.env.JOB_NAME),
 
     plugins: [
-        // This is where some magic happens (not in a good way, nothing magical
-        // in code is good). Setting 'runtime' as the last 'name' in the name
-        // array passed to CommonsChunkPlugin will cause the webpack runtime to
-        // be extracted into it's own chunk. If you don't do this, you will have
-        // hash updates to your vendor bundle if *any* entry file changes, since
-        // the runtime references each entry and their hashes change.
+        // This is where the magic happens. See the documentation for the
+        // CommonsChunkPlugin:
+        // https://webpack.js.org/guides/code-splitting-libraries/#commonschunkplugin
+        // Essentially, the plugin allows us to extract common dependencies from
+        // entry files and put them in a "common" chunk or chunks.
+        // By specifying an additional chunk from the vendor chunk (here named
+        // 'runtime' but it could be any string) it causes the webpack runtime
+        // to be extracted into it's own chunk. If the runtime wasn't extracted
+        // into its own chunk, you would have hash updates to your vendor bundle
+        // if *any* entry file changes, since the runtime references each entry
+        // and their hashes change.
         // ref: https://webpack.js.org/guides/code-splitting-libraries/#manifest-file
+        //
+        // Note that although the runtime's bundle/chunk hash changes with each
+        // build (if any modules change) that is necessary and OK. The runtime
+        // chunk after minification and gzipping should be very small (<5k
+        // depending on the size of the project). It will be cached across your
+        // site, but not between builds.
         new webpack.optimize.CommonsChunkPlugin({
             name: ['vendor', 'runtime'],
             // Ensures that no other modules go into the vendor chunk.

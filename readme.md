@@ -28,7 +28,7 @@ Then,
 
 You should see stable vendor output unless you change the modules in the vendor bundle by altering `entry.vendor` field.
 
-Note that the `runtime` bundle will change with each build (if any modules change). This is necessary and OK. The `runtime` file after minification and gzipping should be very small (<5k depending on the size of the project). It will be cached across your site, but not between builds. 
+Note that although the runtime's bundle hash changes with each build (if any modules change), that is necessary and OK. The runtime chunk after minification and gzipping should be very small (<5k depending on the size of the project). It will be cached across your site, but not between builds.
 
 ## Problems?
 
